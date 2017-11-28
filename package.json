@@ -8,7 +8,7 @@
     "pretest": "npm run babel",
     "tap": "tap -Rspec test.js",
     "babel": "babel src -d .",
-    "test": "nyc npm run tap"
+    "test": "nyc tap test.js"
   },
   "babel": {
     "presets": [
