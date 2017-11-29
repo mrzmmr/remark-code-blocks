@@ -1,4 +1,4 @@
-# Remark Code Blocks
+# remark-code-blocks
 
 > [Remark](https://github.com/syntax-tree/remark) plugin for selecting and storing code blocks from markdown.
 
@@ -15,19 +15,19 @@ npm i -S remark-code-blocks
 ## Usage
 
 ```js
-const remark = require('remark')
 const codeblocks = require('remark-code-blocks')
-// markdown = some markdown with `code`
+const toVfile = require('to-vfile')
+const remark = require('remark')
+
+const md = toVfile.readSync('./example.md')
 
 remark()
-  .use(codeblocks)
-  .process(markdown)
-  .then(file => {
-    // file.data.codeblocks = [ ...codeblocks ]
+  .use(codeblocks, {/* options */})
+  .process(md)
+  .then(vfile => {
+    /* vfile.data.codeblocks = [ ... ] */
   })
-  .catch(err => {
-    // handle any error
-  })
+  .catch(/* ... */)
 ```
 
 ## Options
@@ -42,10 +42,10 @@ remark()
 
 Select all the javascript code blocks in a markdown document, join them, prettify, and log the result to the console.
 
-```
+```sh
 # dependencies
 
-npm i remark remark-code-blocks prettier
+npm i remark remark-code-blocks to-vfile prettier
 ```
 
 ````md
@@ -81,17 +81,17 @@ const evens = (array) => {
 
 const codeblocks = require('remark-code-blocks')
 const prettier = require('prettier')
+const toVfile = require('to-vfile')
 const remark = require('remark')
-const fs = require('fs')
 
-const markdown = fs.readFileSync('./example.md', 'utf-8')
+const md = toVfile.readSync('./example.md')
 
 remark()
   .use(codeblocks, {
     values: true,
     lang: 'js',
   })
-  .process(markdown)
+  .process(md)
   .then(vfile => {
     let code = vfile.data.codeblocks.join('\n')
     let formatted = prettier.format(code)
