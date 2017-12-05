@@ -4,11 +4,14 @@
   "description": "Extract code blocks from an MDAST tree",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf ./*.js .nyc_output coverage",
-    "pretest": "npm run babel",
+    "prepublish": "npm run build",
+    "clean": "rimraf ./*.js coverage .nyc_output",
+    "pretest": "npm run build",
+    "lint": "xo --fix src/*.js",
     "tap": "tap -Rspec test.js",
+    "build": "npm run lint && npm run babel",
     "babel": "babel src -d .",
-    "test": "nyc --reporter=lcov tap test.js"
+    "test": "nyc npm run tap && nyc report --reporter=text-lcov | coveralls"
   },
   "babel": {
     "presets": [
@@ -21,6 +24,20 @@
         }
       ]
     ]
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "xo": {
+    "extends": [
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": "error"
+    }
   },
   "repository": {
     "type": "git",
@@ -43,11 +60,15 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.3.1",
     "nyc": "^11.3.0",
+    "prettier": "^1.8.2",
     "remark": "^8.0.0",
     "rimraf": "^2.6.2",
     "tap": "^10.7.3",
-    "unist-util-is": "^2.1.1"
+    "unist-util-is": "^2.1.1",
+    "xo": "^0.18.2"
   },
   "dependencies": {
     "unist-util-find-all-after": "^1.0.1"
