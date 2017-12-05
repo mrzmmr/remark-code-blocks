@@ -4,14 +4,15 @@
   "description": "Extract code blocks from an MDAST tree",
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "npm run test",
     "clean": "rimraf ./*.js coverage .nyc_output",
     "pretest": "npm run build",
     "lint": "xo --fix src/*.js",
     "tap": "tap -Rspec test.js",
     "build": "npm run lint && npm run babel",
     "babel": "babel src -d .",
-    "test": "nyc npm run tap && nyc report --reporter=text-lcov | coveralls"
+    "report": "nyc report --reporter=text-lcov | coveralls",
+    "test": "nyc npm run tap"
   },
   "babel": {
     "presets": [
