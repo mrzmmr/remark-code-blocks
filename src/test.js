@@ -2,8 +2,8 @@
 
 const is = require('unist-util-is');
 const remark = require('remark');
-const test = require('tap').test;
-const codeblocks = require('./');
+const { test } = require('tap');
+const codeblocks = require('.');
 
 const markdown = `
 # Foo
