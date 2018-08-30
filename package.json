@@ -4,41 +4,10 @@
   "description": "Extract code blocks from an MDAST tree",
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run test",
     "clean": "rimraf ./*.js coverage .nyc_output",
-    "pretest": "npm run build",
-    "lint": "xo --fix src/*.js",
     "tap": "tap -Rspec test.js",
-    "build": "npm run lint && npm run babel",
-    "babel": "babel src -d .",
     "report": "nyc report --reporter=text-lcov | coveralls",
     "test": "nyc npm run tap"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ]
-  },
-  "prettier": {
-    "singleQuote": true
-  },
-  "xo": {
-    "extends": [
-      "prettier"
-    ],
-    "plugins": [
-      "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": "error"
-    }
   },
   "repository": {
     "type": "git",
@@ -52,7 +21,7 @@
     "blocks",
     "extract"
   ],
-  "author": "mrzmmr",
+  "author": "Paul Zimmer",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mrzmmr/remark-code-blocks/issues"
