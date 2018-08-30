@@ -28,19 +28,8 @@
   },
   "homepage": "https://github.com/mrzmmr/remark-code-blocks#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-prettier": "^2.3.1",
     "nyc": "^13.0.1",
-    "prettier": "^1.8.2",
-    "remark": "^8.0.0",
     "rimraf": "^2.6.2",
-    "tap": "^12.0.1",
-    "unist-util-is": "^2.1.1",
-    "xo": "^0.22.0"
-  },
-  "dependencies": {
-    "unist-util-find-all-after": "^1.0.1"
+    "tap": "^12.0.1"
   }
 }
