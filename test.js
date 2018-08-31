@@ -6,11 +6,24 @@ const { test } = require('tap')
 const codeblocks = require('.')
 
 test('remark-code-blocks', t => {
-  const mixLang = '```\nconst a = 42\n```\n\n```go\nfmt.Println("Hi")\n```'
-  const noLang = '```\nconst a = 42\n```'
+  const mixLang = '# Test\n```\nconst a = 42\n```\n\n```go\nfmt.Println("Hi")\n```'
+  const noLang = '# Test\n```\nconst a = 42\n```'
   const processor = unified()
     .use(parser)
     .use(stringify)
+
+    t.test('with codeblocks already taken', it => {
+        let file = processor().processSync(noLang)
+        file.data.codeblocks = {_: []}
+        let newFile = processor()
+            .use(codeblocks)
+            .processSync(file)
+        it.ok(
+            newFile.data.codeblocks._,
+            'it should not replace already stored.'
+        )
+        it.end()
+  })
 
   t.test('it should work without options', it => {
     let p = processor().use(codeblocks)
