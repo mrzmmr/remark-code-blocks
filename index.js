@@ -1,27 +1,36 @@
 module.exports = options => (tree, file) => {
   const settings = options || {}
-  const formatter = settings.formatter || (v => v)
   const lang = settings.lang || 'all'
+  const name = settings.name || 'codeblocks'
+  const formatter = settings.formatter || (v => v)
+
   const { children } = tree
   let i = -1
   let child
 
-  while (++i < children.length) {
-    child = children[i]
-
-    if (!file.data.codeblocks) {
-      file.data.codeblocks = []
-    }
-
-    if (child.type === 'code') {
-      if (lang === 'all' || child.lang === lang) {
-        file.data.codeblocks.push(formatter(child.value))
-      }
+  if (!file.data[name]) {
+    if (lang === 'all') {
+      file.data[name] = {}
+    } else {
+      file.data[name] = []
     }
   }
 
-  // Theres no need for the property if its empty.
-  if (file.data.codeblocks.length === 0) {
-    delete file.data.codeblocks
+  while (++i < children.length) {
+    child = children[i]
+
+    if (child.type === 'code' && child.value) {
+      if (lang === 'all') {
+        child.lang = child.lang || '_'
+        if (!file.data[name][child.lang]) {
+          file.data[name][child.lang] = []
+        }
+        file.data[name][child.lang].push(formatter(child.value))
+      } else {
+        if (child.lang === lang) {
+          file.data[name].push(formatter(child.value))
+        }
+      }
+    }
   }
 }
