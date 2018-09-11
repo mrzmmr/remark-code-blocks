@@ -1,10 +1,10 @@
 {
   "name": "remark-code-blocks",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Extract code blocks from an MDAST tree",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf ./*.js coverage .nyc_output",
+    "clean": "rimraf coverage .nyc_output",
     "tap": "tap -Rspec test.js",
     "report": "nyc report --reporter=text-lcov | coveralls",
     "test": "nyc npm run tap"
@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/mrzmmr/remark-code-blocks#readme",
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "nyc": "^13.0.1",
     "remark-parse": "^5.0.0",
     "remark-stringify": "^5.0.0",
