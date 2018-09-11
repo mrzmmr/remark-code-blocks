@@ -1,10 +1,10 @@
 # remark-code-blocks
 
-> [Remark](https://github.com/syntax-tree/remark) plugin for selecting and storing code blocks from markdown.
+> [Remark](https://github.com/syntax-tree/remark) plugin to extract `code` nodes from markdown.
 
 [![Travis](https://img.shields.io/travis/mrzmmr/remark-code-blocks.svg)](https://travis-ci.org/mrzmmr/remark-code-blocks)
-[![Codecov](https://img.shields.io/codecov/c/github/mrzmmr/remark-code-blocks.svg)](https://codecov.io/gh/mrzmmr/remark-code-blocks)
-[![dependencies Status](https://david-dm.org/mrzmmr/remark-code-blocks/status.svg)](https://david-dm.org/mrzmmr/remark-code-blocks)
+[![Coverage
+Status](https://coveralls.io/repos/github/mrzmmr/remark-code-blocks/badge.svg?branch=master)](https://coveralls.io/github/mrzmmr/remark-code-blocks?branch=master)
 
 ## Install
 
@@ -15,99 +15,67 @@ npm i -S remark-code-blocks
 ## Usage
 
 ```js
-const codeblocks = require('remark-code-blocks')
 const toVfile = require('to-vfile')
-const remark = require('remark')
-
-const md = toVfile.readSync('./example.md')
-
-remark()
-  .use(codeblocks, {/* options */})
-  .process(md)
-  .then(vfile => {
-    /* vfile.data.codeblocks = [ ... ] */
-  })
-  .catch(/* ... */)
-```
-
-## Options
-
-### `codeblocks.lang`
-*`string`* - Filters out nodes based on their lang value. Default `null`
-
-### `codeblocks.values`
-*`bool`* - Stores a nodes values instead. Default `false`
-
-## Example
-
-Select all the javascript code blocks in a markdown document, join them, prettify, and log the result to the console.
-
-```sh
-# dependencies
-
-npm i remark remark-code-blocks to-vfile prettier
-```
-
-````md
-# example.md
-
-## Evens
-
-This code block won’t be selected
-```
-'use strict'
-```
-
-*function expression*
-```js
-const evens = (array) => {
-```
-
-*return filtered array*
-```js 
-  return array.filter(value => {
-```
-
-*filter test*
-```js
-    return value % 2 == 0
-  })
-}
-```
-````
-
-```js
-/* example.js */
-
+const unified = require('unified')
+const parser = require('remark-parser')
+const stringify = require('remark-stringify')
 const codeblocks = require('remark-code-blocks')
-const prettier = require('prettier')
-const toVfile = require('to-vfile')
-const remark = require('remark')
 
-const md = toVfile.readSync('./example.md')
-
-remark()
-  .use(codeblocks, {
-    values: true,
-    lang: 'js',
-  })
-  .process(md)
-  .then(vfile => {
-    let code = vfile.data.codeblocks.join('\n')
-    let formatted = prettier.format(code)
-    console.log(formatted)
-  })
+unified()
+    .use(parser)
+    .use(stringify)
+    .use(codeblocks, { /* options */ })
+    .process(toVfile('./example.md'))
+    .then(file => {
+        /* file.data.codeblocks = [ ... ] */
+    })
 ```
+
+or use the standalone function which takes a tree as its first argument.
 
 ```js
-/* output */
+const toVfile = require('to-vfile')
+const unified = require('unified')
+const parser = require('remark-parser')
+const { codeblocks } = require('remark-code-blocks')
 
-const evens = array => {
-  return array.filter(value => {
-    return value % 2 == 0;
-  });
-};
+const tree = unified().use(parser).parse(toVfile('./example.md'))
+const code = codeblocks(tree, { /* options */ })
 ```
+
+## API
+
+### .use(codeblocks[, options])
+Use as a plugin to extract code nodes.
+
+The results are stored in `file.data` in a `codeblocks` property by default. You can override the name of the property using `options.name`.
+
+### .codeblocks(tree[, options])
+
+Also exports a standalone function.
+
+### Options
+
+#### lang
+
+Type: `string`
+Default: `all`
+
+Specify a language and only extract code nodes with that language. Otherwise `all` code nodes are extracted.
+
+#### name
+
+Type: `string`
+Default: `codeblocks`
+
+Specify the name of the property in `file.data`
+
+#### formatter
+
+Type: `function`
+Default: none
+
+Add a function to run over the nodes values before storing them in `file.data`
 
 ## License
 
