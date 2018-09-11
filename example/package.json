@@ -4,6 +4,7 @@
     "prettier": "^1.14.2",
     "remark-parse": "^5.0.0",
     "remark-stringify": "^5.0.0",
+    "to-vfile": "^5.0.1",
     "unified": "^7.0.0"
   }
 }
