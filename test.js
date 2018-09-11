@@ -12,6 +12,23 @@ test('remark-code-blocks', t => {
     .use(parser)
     .use(stringify)
 
+    t.test('standalone function', it => {
+        const tree = unified()
+        .use(parser)
+        .parse(noLang)
+        const code = codeblocks.codeblocks(tree)
+
+        it.ok(
+            code.codeblocks,
+            'It should return an object with a codeblocks property'
+        )
+        it.ok(
+            Array.isArray(code.codeblocks._),
+            'It should create a `_` property in `codeblocks`'
+        )
+        it.end()
+    })
+
     t.test('with codeblocks already taken', it => {
         let file = processor().processSync(noLang)
         file.data.codeblocks = {_: []}

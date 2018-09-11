@@ -1,36 +1,43 @@
-module.exports = options => (tree, file) => {
-  const settings = options || {}
-  const lang = settings.lang || 'all'
-  const name = settings.name || 'codeblocks'
-  const formatter = settings.formatter || (v => v)
+const codeblocks = (tree, options) => {
+    options = options || {}
 
-  const { children } = tree
-  let i = -1
-  let child
+    const lang = options.lang || 'all'
+    const name = options.name || 'codeblocks'
+    const formatter = options.formatter || (v => v)
 
-  if (!file.data[name]) {
+    const { children } = tree
+    let data = {}
+    let i = -1
+    let child
+
     if (lang === 'all') {
-      file.data[name] = {}
+        data[name] = {}
     } else {
-      file.data[name] = []
+        data[name] = []
     }
-  }
 
-  while (++i < children.length) {
-    child = children[i]
+    while (++i < children.length) {
+        child = children[i]
 
-    if (child.type === 'code' && child.value) {
-      if (lang === 'all') {
-        child.lang = child.lang || '_'
-        if (!file.data[name][child.lang]) {
-          file.data[name][child.lang] = []
+        if (child.type === 'code' && child.value) {
+            if (lang === 'all') {
+                child.lang = child.lang || '_'
+                data[name][child.lang] = data[name][child.lang] || []
+                data[name][child.lang].push(formatter(child.value))
+            } else {
+                if (child.lang === lang) {
+                    data[name].push(formatter(child.value))
+                }
+            }
         }
-        file.data[name][child.lang].push(formatter(child.value))
-      } else {
-        if (child.lang === lang) {
-          file.data[name].push(formatter(child.value))
-        }
-      }
     }
-  }
+
+    return data
 }
+
+module.exports = options => (tree, file) => {
+    const data = codeblocks(tree, options)
+    file.data = Object.assign({}, file.data, data)
+}
+
+module.exports.codeblocks = (tree, options) => codeblocks(tree, options)
