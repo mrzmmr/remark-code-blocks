@@ -30,7 +30,7 @@
     "coveralls": "^3.0.5",
     "remark-parse": "^7.0.0",
     "remark-stringify": "^7.0.1",
-    "tap": "^14.5.0",
+    "tap": "^14.10.7",
     "unified": "^8.3.2"
   }
 }
