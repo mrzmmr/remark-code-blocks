@@ -77,6 +77,13 @@ Default: none
 
 Add a function to run over the nodes values before storing them in `file.data`
 
+#### validator
+
+Type: `function`
+Default: none
+
+Specify a function to run over the nodes for match relevant nodes.
+
 ## License
 
 MIT &copy; Paul Zimmer

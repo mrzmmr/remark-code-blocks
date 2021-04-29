@@ -6,7 +6,7 @@ const { test } = require('tap')
 const codeblocks = require('.')
 
 test('remark-code-blocks', t => {
-  const mixLang = '# Test\n```\nconst a = 42\n```\n\n```go\nfmt.Println("Hi")\n```'
+  const mixLang = '# Test\n```\nconst a = 42\n```\n\n```go metaTextOne\nfmt.Println("Hi")\n```'
   const noLang = '# Test\n```\nconst a = 42\n```'
   const processor = unified()
     .use(parser)
@@ -76,6 +76,35 @@ test('remark-code-blocks', t => {
       p.processSync(mixLang).data.code[0] === 'fmt.Println("Hi")',
       'it should only select one language'
     )
+    it.end()
+  })
+
+  t.test('it should only select code nodes with specified lang and custom validator from options', it => {
+    const validator = (node) => node.meta === "metaTextOne";
+
+    let p = processor().use(codeblocks, { name: 'code', lang: 'go', validator })
+    it.ok(
+      Array.isArray(p.processSync(mixLang).data.code),
+      'When lang and validator options is specified store in array'
+    )
+    it.ok(
+      p.processSync(mixLang).data.code[0] === 'fmt.Println("Hi")',
+      'it should only select one language and custom validator'
+    )
+
+    it.end()
+  })
+
+  t.test('it should empty with custom validator from options', it => {
+    const validator = (node) => node.meta === "metaTextTwo";
+
+    let p = processor().use(codeblocks, { name: 'code', validator })
+    console.log(p.processSync(mixLang).data);
+    it.ok(
+      Object.keys(p.processSync(mixLang).data.code).length === 0,
+      'it should empty'
+    )
+
     it.end()
   })
 

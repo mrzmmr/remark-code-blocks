@@ -4,6 +4,7 @@ const codeblocks = (tree, options) => {
   const lang = options.lang || 'all'
   const name = options.name || 'codeblocks'
   const formatter = options.formatter || (v => v)
+  const validator = options.validator || (() => true)
 
   const { children } = tree
   let data = {}
@@ -19,7 +20,7 @@ const codeblocks = (tree, options) => {
   while (++i < children.length) {
     child = children[i]
 
-    if (child.type === 'code' && child.value) {
+    if (child.type === 'code' && child.value && validator(child)) {
       if (lang === 'all') {
         child.lang = child.lang || '_'
         data[name][child.lang] = data[name][child.lang] || []
