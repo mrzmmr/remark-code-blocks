@@ -1,6 +1,6 @@
 {
-  "name": "remark-code-blocks",
-  "version": "2.0.2",
+  "name": "lerixik-remark-code-blocks",
+  "version": "2.0.4",
   "description": "Extract code blocks from an MDAST tree",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mrzmmr/remark-code-blocks.git"
+    "url": "git+https://github.com/TomKalina/remark-code-blocks.git"
   },
   "keywords": [
     "remark",
@@ -23,9 +23,9 @@
   "author": "Paul Zimmer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrzmmr/remark-code-blocks/issues"
+    "url": "https://github.com/TomKalina/remark-code-blocks/issues"
   },
-  "homepage": "https://github.com/mrzmmr/remark-code-blocks#readme",
+  "homepage": "https://github.com/TomKalina/remark-code-blocks#readme",
   "devDependencies": {
     "coveralls": "^3.0.5",
     "remark-parse": "^7.0.0",
